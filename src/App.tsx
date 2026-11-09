@@ -932,7 +932,7 @@ function ProjectPanel({
                   }
                 >
                   <Icon name="play" size={14} />
-                  Live preview
+                  Preview
                 </button>
               )}
               {apkLink && (
@@ -1206,7 +1206,16 @@ function FactNote({
 }
 
 function ProjectDetailPage({ number }: { number: 1 | 2 | 3 | 4 | 5 }) {
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const other = number === 5 ? 1 : ((number + 1) as 1 | 2 | 3 | 4 | 5);
+  const apkLink =
+    number === 2
+      ? "https://apkpure.com/portjeep/com.example.portjeep"
+      : number === 3
+        ? "https://apkpure.com/smart-grow/com.example.smartgrow"
+        : "";
+  const previewLink =
+    number === 4 ? "https://jolly-island-v3.vercel.app/login" : "";
   const projectImage =
     number === 1
       ? "/Tindahan.png"
@@ -1485,7 +1494,61 @@ function ProjectDetailPage({ number }: { number: 1 | 2 | 3 | 4 | 5 }) {
               </>
             )}
           </div>
+          {(number === 1 || number === 4) && (
+            <div className="detail-project-actions">
+              {number === 1 ? (
+                <button type="button" onClick={() => setIsPreviewOpen(true)}>
+                  <Icon name="play" size={16} />
+                  Preview
+                </button>
+              ) : (
+                <a href={previewLink} target="_blank" rel="noreferrer">
+                  <Icon name="play" size={16} />
+                  Preview
+                </a>
+              )}
+            </div>
+          )}
+          {apkLink && (
+            <div className="detail-project-actions">
+              <a href={apkLink} target="_blank" rel="noreferrer">
+                <Icon name="download" size={16} />
+                Download APK
+              </a>
+            </div>
+          )}
         </section>
+        {isPreviewOpen && (
+          <div
+            className="project-preview-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="detail-preview-title"
+          >
+            <div className="project-preview-modal-card">
+              <button
+                type="button"
+                className="project-preview-close"
+                aria-label="Close"
+                onClick={() => setIsPreviewOpen(false)}
+              >
+                ×
+              </button>
+              <h3 id="detail-preview-title">Coming soon</h3>
+              <p>
+                The preview for Sari-Sari Store Management System is not
+                available yet.
+              </p>
+              <button
+                type="button"
+                className="project-preview-confirm"
+                onClick={() => setIsPreviewOpen(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
         <section className="related-projects">
           <h2 className="hand">more projects</h2>
           <ProjectCard number={other} />

@@ -2204,6 +2204,42 @@ main.lined-page {
   text-transform: uppercase;
 }
 
+.detail-project-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 64px;
+}
+
+.detail-project-actions a,
+.detail-project-actions button {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 2px solid var(--ink);
+  background: var(--yellow);
+  padding: 0 22px;
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
+  font-family: "DM Mono", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.detail-project-actions a:hover,
+.detail-project-actions button:hover {
+  box-shadow: 1px 1px 0 var(--ink);
+  transform: translate(2px, 2px);
+}
+
 .related-projects {
   margin-top: 128px;
 }
