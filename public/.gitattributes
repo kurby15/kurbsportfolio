@@ -1,2 +1,6 @@
 # AgentPlat packages this default favicon directly from source without LFS hydration.
 favicon.png -filter -diff -merge -text
+
+# Vercel must receive public assets as real bytes, not Git LFS pointer files.
+*.png -filter -diff -merge -text
+*.woff2 -filter -diff -merge -text
