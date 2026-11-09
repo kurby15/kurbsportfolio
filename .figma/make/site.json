@@ -1,0 +1,10 @@
+{
+  "description": "Explore John Kurby Valencerina’s portfolio, learn about his design approach and story, and connect with him about projects.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
