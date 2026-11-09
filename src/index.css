@@ -1262,6 +1262,19 @@ main.lined-page {
   letter-spacing: -0.025em;
 }
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 36px;
+}
+
+.hero-actions .hero-cta {
+  margin-top: 0;
+}
+
 .hero-cta,
 .about-more {
   display: inline-flex;
@@ -1305,6 +1318,15 @@ main.lined-page {
 .hero-cta:hover {
   background: transparent;
   color: var(--ink);
+}
+
+.hero-cta-download {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.hero-cta-download span {
+  background: var(--yellow);
 }
 
 .hero-mobile-notes,
@@ -3326,7 +3348,7 @@ main.lined-page {
     margin-top: 36px;
     font-size: 36px;
   }
-  .hero-cta {
+  .hero-actions {
     margin-top: 32px;
   }
   .home-about {

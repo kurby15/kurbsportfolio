@@ -7,7 +7,8 @@ type IconName =
   | "diamond"
   | "heart"
   | "menu"
-  | "close";
+  | "close"
+  | "download";
 
 function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   if (name === "person") {
@@ -73,6 +74,23 @@ function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
         ) : (
           <path d="m5 5 14 14M19 5 5 19" />
         )}
+      </svg>
+    );
+  }
+  if (name === "download") {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        width={size}
+        height={size}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 17v4h14v-4" />
       </svg>
     );
   }
@@ -157,11 +175,12 @@ function Socials({ large = false }: { large?: boolean }) {
   );
 }
 
-const navItems: Array<[IconName, string, string]> = [
+const navItems: Array<[IconName, string, string, boolean?]> = [
   ["home", "Home", "/"],
   ["person", "About", "/about"],
   ["grid", "Case Study", "/case-studies"],
   ["diamond", "Playground", "/playground"],
+  ["download", "Download Resume", "/kurbs_updated_resume.pdf", true],
 ];
 
 function Header() {
@@ -183,11 +202,12 @@ function Header() {
             <span className="smile" />
           </a>
           <nav className="desktop-nav" aria-label="Main navigation">
-            {navItems.map(([icon, label, href]) => (
+            {navItems.map(([icon, label, href, download]) => (
               <a
                 key={label}
                 className={isActive(href) ? "active" : ""}
                 href={href}
+                download={download ? "kurbs_updated_resume.pdf" : undefined}
               >
                 <Icon name={icon} />
                 {label}
@@ -214,8 +234,13 @@ function Header() {
       </div>
       {open && (
         <nav className="mobile-menu" aria-label="Mobile navigation">
-          {navItems.map(([icon, label, href]) => (
-            <a key={label} href={href} onClick={() => setOpen(false)}>
+          {navItems.map(([icon, label, href, download]) => (
+            <a
+              key={label}
+              href={href}
+              download={download ? "kurbs_updated_resume.pdf" : undefined}
+              onClick={() => setOpen(false)}
+            >
               <Icon name={icon} />
               {label}
             </a>
@@ -922,12 +947,24 @@ function HomePage() {
             <h2>
               I build software and systems that work. <Target /> <Flower />
             </h2>
-            <a className="hero-cta" href="/contact">
-              <span>
-                <ArrowUpRight />
-              </span>
-              Contact me
-            </a>
+            <div className="hero-actions">
+              <a className="hero-cta" href="/contact">
+                <span>
+                  <ArrowUpRight />
+                </span>
+                Contact me
+              </a>
+              <a
+                className="hero-cta hero-cta-download"
+                href="/kurbs_updated_resume.pdf"
+                download="kurbs_updated_resume.pdf"
+              >
+                <span>
+                  <Icon name="download" />
+                </span>
+                Download Resume
+              </a>
+            </div>
           </div>
         </section>
 
