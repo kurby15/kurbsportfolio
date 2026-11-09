@@ -8,7 +8,8 @@ type IconName =
   | "heart"
   | "menu"
   | "close"
-  | "download";
+  | "download"
+  | "play";
 
 function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   if (name === "person") {
@@ -91,6 +92,19 @@ function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
         aria-hidden="true"
       >
         <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 17v4h14v-4" />
+      </svg>
+    );
+  }
+  if (name === "play") {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        width={size}
+        height={size}
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path d="M8 5.5v13l10-6.5-10-6.5Z" />
       </svg>
     );
   }
@@ -495,6 +509,14 @@ const educationRecords = [
 function AboutScreenshotIntro() {
   return (
     <section className="about-screenshot-intro lined-page">
+      <svg
+        className="about-separator-doodle"
+        viewBox="0 0 1440 64"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path d="M8 55 C360 8 930 4 1432 39" />
+      </svg>
       <p className="hand section-kicker">about me!</p>
       <BasicPolaroid
         className="about-shot-photo about-shot-left"
@@ -525,15 +547,17 @@ function AboutScreenshotIntro() {
             alt="John Kurby Dr. Valencerina working in a computer lab"
           />
         </div>
-        <div className="about-stickers" aria-hidden="true">
-          <span className="paper-sticker yellow">
-            <Sparkle />
-          </span>
-          <span className="paper-sticker green">
-            <Palette />
-          </span>
-          <span className="paper-sticker pink">✦</span>
-        </div>
+        <ul
+          className="about-skill-ribbons"
+          aria-label="Resume skill highlights"
+        >
+          <li>React + TypeScript</li>
+          <li>Java + Android</li>
+          <li>Firebase + SQL</li>
+          <li>VMware + Active Directory</li>
+          <li>Cisco Networking</li>
+          <li>Hardware Diagnostics</li>
+        </ul>
       </div>
     </section>
   );
@@ -758,7 +782,7 @@ function getProjectTitle(number: 1 | 2 | 3 | 4 | 5) {
   if (number === 2) return "PortJeep Mobile Application";
   if (number === 3) return "SmartGrow Application";
   if (number === 4) return "JollyIsland Management System";
-  return `Project ${number}`;
+  return "SMNHS LIBRARY MANAGEMENT SYSTEM";
 }
 
 function getProjectDescription(number: 1 | 2 | 3 | 4 | 5) {
@@ -780,6 +804,8 @@ function ProjectPanel({
   number: 1 | 2 | 3 | 4 | 5;
   dark?: boolean;
 }) {
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
   const projectHref = `/case-studies/project-${number}`;
   const projectImage =
     number === 1
@@ -792,120 +818,204 @@ function ProjectPanel({
             ? "/jollyisland.png"
             : "/placeholder-image.svg";
   const projectDescription = getProjectDescription(number);
+  const apkLink =
+    number === 2
+      ? "https://apkpure.com/portjeep/com.example.portjeep"
+      : number === 3
+        ? "https://apkpure.com/smart-grow/com.example.smartgrow"
+        : "";
+  const livePreviewLink =
+    number === 4 ? "https://jolly-island-v3.vercel.app/login" : "";
+  const isMaintenance = number === 5;
 
   return (
-    <article className={`home-project ${dark ? "dark" : "blue"}`}>
-      <div className="project-tab">✦ Project 0{number}</div>
-      <div className="project-panel-inner">
-        <div className="project-panel-copy">
-          <div className="project-meta">
-            <span className="project-bullet">
-              <i />
-            </span>
+    <>
+      <article
+        className={`home-project ${dark ? "dark" : "blue"} ${isMaintenance ? "maintenance" : ""}`}
+      >
+        <div className="project-tab">✦ Project 0{number}</div>
+        <div className="project-panel-inner">
+          <div className="project-panel-copy">
+            <div className="project-meta">
+              <span className="project-bullet">
+                <i />
+              </span>
+              {number === 1 && (
+                <span className="project-date">October 5, 2026</span>
+              )}
+              {number === 2 && (
+                <span className="project-date">September 28, 2026</span>
+              )}
+              {number === 3 && (
+                <span className="project-date">October 3, 2026</span>
+              )}
+              {number === 4 && (
+                <span className="project-date">September 20, 2026</span>
+              )}
+            </div>
+            <h3>{getProjectTitle(number)}</h3>
+            {projectDescription && (
+              <p className="project-description">{projectDescription}</p>
+            )}
+            {number !== 5 && (
+              <div className="facts-grid project-home-facts">
+                <FactNote
+                  label="Role"
+                  value={
+                    number === 1
+                      ? "Main Dev"
+                      : number === 2
+                        ? "Main Android Developer"
+                        : "Support Developer"
+                  }
+                  color="cyan"
+                  tilt="tilt-left"
+                />
+                <FactNote
+                  label="Timeline"
+                  value={
+                    number === 1
+                      ? "Oct 05, 2026 - Present"
+                      : number === 2
+                        ? "Aug 15, 2026 - Sep 28, 2026"
+                        : number === 3
+                          ? "Aug 10, 2026 - Oct 03, 2026"
+                          : "May 16, 2026 - Sep 20, 2026"
+                  }
+                  color="tan"
+                  tilt="tilt-right"
+                />
+                <FactNote
+                  label="Team"
+                  value={
+                    number === 1
+                      ? "1 Developer, 1 UI/UX, Me"
+                      : number === 2
+                        ? "1 UI/UX, Me"
+                        : number === 3
+                          ? "3 Developers, 1 UI/UX, 1 PM, Me"
+                          : "1 Developer, Me"
+                  }
+                  color="mint"
+                  tilt="tilt-left"
+                />
+                <FactNote
+                  label="Year"
+                  value="2026"
+                  color="cyan"
+                  tilt="tilt-soft"
+                />
+              </div>
+            )}
+            <div className="project-actions">
+              {isMaintenance ? (
+                <span className="project-view-disabled" aria-disabled="true">
+                  View project <ArrowUpRight />
+                </span>
+              ) : (
+                <a href={projectHref}>
+                  View project <ArrowUpRight />
+                </a>
+              )}
+              {(number === 1 || number === 4) && (
+                <button
+                  type="button"
+                  className="project-live-preview-button"
+                  onClick={() =>
+                    number === 1
+                      ? setIsPreviewOpen(true)
+                      : window.open(
+                          livePreviewLink,
+                          "_blank",
+                          "noopener,noreferrer",
+                        )
+                  }
+                >
+                  <Icon name="play" size={14} />
+                  Live preview
+                </button>
+              )}
+              {apkLink && (
+                <a
+                  className="project-download-link"
+                  href={apkLink}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Icon name="download" size={14} />
+                  Download APK
+                </a>
+              )}
+            </div>
             {number === 1 && (
-              <span className="project-date">October 5, 2026</span>
+              <div className="project-tags" aria-label="Project categories">
+                <span>Retail</span>
+                <span>Management system</span>
+              </div>
             )}
             {number === 2 && (
-              <span className="project-date">September 28, 2026</span>
+              <div className="project-tags" aria-label="Project categories">
+                <span>Mobility</span>
+                <span>Consumer app</span>
+              </div>
             )}
             {number === 3 && (
-              <span className="project-date">October 3, 2026</span>
+              <div className="project-tags" aria-label="Project categories">
+                <span>AI</span>
+                <span>Consumer app</span>
+              </div>
             )}
             {number === 4 && (
-              <span className="project-date">September 20, 2026</span>
+              <div className="project-tags" aria-label="Project categories">
+                <span>Operations</span>
+                <span>RFID system</span>
+              </div>
             )}
           </div>
-          <h3>{getProjectTitle(number)}</h3>
-          {projectDescription && (
-            <p className="project-description">{projectDescription}</p>
-          )}
-          {number !== 5 && (
-            <div className="facts-grid project-home-facts">
-              <FactNote
-                label="Role"
-                value={
-                  number === 1
-                    ? "Main Dev"
-                    : number === 2
-                      ? "Main Android Developer"
-                      : "Support Developer"
-                }
-                color="cyan"
-                tilt="tilt-left"
-              />
-              <FactNote
-                label="Timeline"
-                value={
-                  number === 1
-                    ? "Oct 05, 2026 - Present"
-                    : number === 2
-                      ? "Aug 15, 2026 - Sep 28, 2026"
-                      : number === 3
-                        ? "Aug 10, 2026 - Oct 03, 2026"
-                        : "May 16, 2026 - Sep 20, 2026"
-                }
-                color="tan"
-                tilt="tilt-right"
-              />
-              <FactNote
-                label="Team"
-                value={
-                  number === 1
-                    ? "1 Developer, 1 UI/UX, Me"
-                    : number === 2
-                      ? "1 UI/UX, Me"
-                      : number === 3
-                        ? "3 Developers, 1 UI/UX, 1 PM, Me"
-                        : "1 Developer, Me"
-                }
-                color="mint"
-                tilt="tilt-left"
-              />
-              <FactNote
-                label="Year"
-                value="2026"
-                color="cyan"
-                tilt="tilt-soft"
-              />
-            </div>
-          )}
-          <a href={projectHref}>
-            View project <ArrowUpRight />
-          </a>
-          {number === 1 && (
-            <div className="project-tags" aria-label="Project categories">
-              <span>Retail</span>
-              <span>Management system</span>
-            </div>
-          )}
-          {number === 2 && (
-            <div className="project-tags" aria-label="Project categories">
-              <span>Mobility</span>
-              <span>Consumer app</span>
-            </div>
-          )}
-          {number === 3 && (
-            <div className="project-tags" aria-label="Project categories">
-              <span>AI</span>
-              <span>Consumer app</span>
-            </div>
-          )}
-          {number === 4 && (
-            <div className="project-tags" aria-label="Project categories">
-              <span>Operations</span>
-              <span>RFID system</span>
-            </div>
-          )}
+          <div
+            className={`project-panel-image ${number === 1 || number === 2 || number === 3 || number === 4 ? "project-image-landscape" : ""}`}
+          >
+            <Tape className="banner-left" />
+            <Tape className="banner-right" />
+            <img src={projectImage} alt={getProjectTitle(number)} />
+          </div>
         </div>
+        {isMaintenance && (
+          <div className="project-maintenance-overlay">Under maintenance</div>
+        )}
+      </article>
+      {isPreviewOpen && (
         <div
-          className={`project-panel-image ${number === 1 || number === 2 || number === 3 || number === 4 ? "project-image-landscape" : ""}`}
+          className="project-preview-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="sari-sari-preview-title"
         >
-          <Tape className="banner-left" />
-          <Tape className="banner-right" />
-          <img src={projectImage} alt={getProjectTitle(number)} />
+          <div className="project-preview-modal-card">
+            <button
+              type="button"
+              className="project-preview-close"
+              aria-label="Close"
+              onClick={() => setIsPreviewOpen(false)}
+            >
+              ×
+            </button>
+            <h3 id="sari-sari-preview-title">Coming soon</h3>
+            <p>
+              The live preview for Sari-Sari Store Management System is not
+              available yet.
+            </p>
+            <button
+              type="button"
+              className="project-preview-confirm"
+              onClick={() => setIsPreviewOpen(false)}
+            >
+              Close
+            </button>
+          </div>
         </div>
-      </div>
-    </article>
+      )}
+    </>
   );
 }
 
@@ -1017,21 +1127,39 @@ function ProjectCard({ number }: { number: 1 | 2 | 3 | 4 | 5 }) {
             ? "SEP 20, 2026"
             : "";
   const projectDescription = getProjectDescription(number);
-
-  return (
-    <a className="project-card" href={`/case-studies/project-${number}`}>
+  const cardContent = (
+    <>
       <span className="project-card-tab">
         <i />
         {projectDate && <span>{projectDate}</span>}
       </span>
       <div className="project-card-media">
         <img src={projectImage} alt={getProjectTitle(number)} />
-        <span className="project-see">See</span>
+        {number === 5 ? (
+          <span className="project-card-maintenance-label">
+            Under maintenance
+          </span>
+        ) : (
+          <span className="project-see">See</span>
+        )}
       </div>
       <h2>{getProjectTitle(number)}</h2>
       {projectDescription && (
         <p className="project-card-description">{projectDescription}</p>
       )}
+    </>
+  );
+
+  return number === 5 ? (
+    <div
+      className="project-card maintenance"
+      aria-label="SMNHS Library Management System, under maintenance"
+    >
+      {cardContent}
+    </div>
+  ) : (
+    <a className="project-card" href={`/case-studies/project-${number}`}>
+      {cardContent}
     </a>
   );
 }
@@ -1272,11 +1400,14 @@ function ProjectDetailPage({ number }: { number: 1 | 2 | 3 | 4 | 5 }) {
           </div>
         </div>
         <div
-          className={`detail-hero ${number === 1 || number === 2 || number === 3 || number === 4 ? "project-image-landscape" : ""}`}
+          className={`detail-hero ${number === 1 || number === 2 || number === 3 || number === 4 ? "project-image-landscape" : ""} ${number === 5 ? "maintenance" : ""}`}
         >
           <Tape className="banner-left" />
           <Tape className="banner-right" />
           <img src={projectImage} alt={getProjectTitle(number)} />
+          {number === 5 && (
+            <div className="project-maintenance-overlay">Under maintenance</div>
+          )}
         </div>
         <section className="story-placeholder">
           <h2 className="hand">the challenge</h2>
